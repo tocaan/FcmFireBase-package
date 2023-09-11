@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `LaravelPackageExample` will be documented in this file.
+All notable changes to `FcmFirebase` will be documented in this file.
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
 ## Version 1.0
