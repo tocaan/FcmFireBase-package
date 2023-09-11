@@ -1,0 +1,64 @@
+{
+    "name": "tocaanco/fcmfirebase",
+    "description": "Allow you to use it send fcm firbase notification",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "AhmedSafwat1",
+            "email": "Ahmed.Safwat1235@gmail.com"
+        }
+    ],
+    "keywords": ["Laravel", "LaravelPackageExample", "package", "boilerplate"],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3|>=7",
+        "illuminate/bus": "^8.50|^9.0|>=10.0",
+        "illuminate/queue": "^8.50|^9.0|=>10.0",
+        "illuminate/support": "^8.50|^9.0|=>10.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "^3.7",
+        "orchestra/testbench-browser-kit": "^3.7",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tocaanco\\FcmFirebase\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tocaanco\\FcmFirebase\\Tests\\": "tests"
+        }
+    },
+    "suggest": {
+        "sensiolabs/security-checker": "Required to use the security check command"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http');\"",
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Controllers');\"",
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Middleware');\""
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tocaanco\\FcmFirebase\\FcmFirebaseServiceProvider"
+            ],
+            "aliases": {
+                "LaravelPackageExample": "KrisOzolins\\LaravelPackageExample\\Facades\\LaravelPackageExample"
+            }
+        }
+    }
+}
