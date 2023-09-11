@@ -17,7 +17,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
      * @var  string
      */
     protected $vendorName = 'tocaanco';
-    protected $packageName = 'fmcfirebase';
+    protected $packageName = 'fcm-firebase';
 
     /**
      * Indicates if loading of the provider is deferred.
