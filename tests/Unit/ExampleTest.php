@@ -1,8 +1,9 @@
 <?php
 
-namespace KrisOzolins\LaravelPackageExample\Tests\Unit;
+namespace Tocaanco\FcmFirebase\Tests\Unit;
 
-use KrisOzolins\LaravelPackageExample\Tests\PackageTestCase;
+use Tocaanco\FcmFirebase\Tests\PackageTestCase;
+
 
 class ExampleTest extends PackageTestCase
 {

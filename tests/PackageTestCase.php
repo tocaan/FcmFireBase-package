@@ -1,9 +1,9 @@
 <?php
 
-namespace KrisOzolins\LaravelPackageExample\Tests;
+namespace Tocaanco\FcmFirebase\Tests;
 
+use Tocaanco\FcmFirebase\FcmFirebaseServiceProvider;
 use Orchestra\TestBench\TestCase as OrchestraTestCase;
-use KrisOzolins\LaravelPackageExample\LaravelPackageExampleServiceProvider;
 
 abstract class PackageTestCase extends OrchestraTestCase
 {
@@ -11,6 +11,6 @@ abstract class PackageTestCase extends OrchestraTestCase
 
     protected function getPackageProviders($app)
     {
-        return [LaravelPackageExampleServiceProvider::class];
+        return [FcmFirebaseServiceProvider::class];
     }
 }

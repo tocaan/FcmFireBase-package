@@ -68,11 +68,11 @@ class FcmFirebaseServiceProvider extends ServiceProvider
             // Checks if configuration is valid
             $this->guardAgainstInvalidConfiguration($config);
 
-            return new FcmFirebaseService;
+            return new FcmFirebaseService();
         });
 
         // Make alias for use with package name
-        $this->app->alias(FcmFirebase::class, "FcmFirebase");
+        $this->app->alias("FcmFirebase", FcmFirebase::class);
     }
 
     /**
@@ -138,12 +138,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
      */
     protected function guardAgainstInvalidConfiguration(array $config = null)
     {
-        // Here you can add as many checks as your package config needed to
-        // consider it valid.
-        // @see \Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration
-        if (empty($config['version'])) {
-            throw InvalidConfiguration::versionNotSpecified();
-        }
+
     }
 
     /**

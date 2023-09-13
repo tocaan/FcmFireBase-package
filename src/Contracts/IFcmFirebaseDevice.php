@@ -4,5 +4,5 @@ namespace Tocaanco\FcmFirebase\Contracts;
 
 interface IFcmFirebaseDevice
 {
-    public function devices();
+    public function deviceTokens();
 }

@@ -2,6 +2,7 @@
 
 namespace Tocaanco\FcmFirebase;
 
+use Exception;
 use Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmFirebaseService
@@ -9,9 +10,12 @@ class FcmFirebaseService
     public $deviceModel ;
     public function __construct()
     {
-        $this->deviceModel = app()->make(config(config("fcm-firebase.model")));
+        $this->deviceModel = new (config("fcm-firebase.device_model"));
     }
-
+ 
+    public function x(){
+        
+    }
 
     public function registerToken($data)
     {
@@ -39,12 +43,10 @@ class FcmFirebaseService
         }
     }
 
-    public function sendForUser($user, $data)
+    public function sendToAllDevices($data)
     {
-
-
         // langue
-        foreach (config('translatable.locales') as $lang) {
+        foreach (config("fcm-firebase.langues") as $lang) {
 
             // platform
             foreach (["IOS", "ANDROID"] as  $platform) {
@@ -53,66 +55,73 @@ class FcmFirebaseService
                 $limit = 999;
                 // devices
                 while (true) {
-                    $devices = $user->devices()->distinct("token")
+                    $devices = $this->deviceModel->select("device_token")->distinct()
                                 ->where("platform", $platform)
                                 ->where("lang", $lang)
-                                ->skip($skip)->take($limit)->pluck("token")->toArray();
-                    $this->{"push".$platform}($data, $devices, $lang);
+                                ->skip($skip)->take($limit)->pluck("device_token")->toArray();
+                    $countDevices = count($devices);
+                    if($countDevices > 0) {
+                        $this->{"push".$platform}($data, $devices, $lang);
 
-                    if(count($devices) > $limit) {
+                    }
+                    if($countDevices < $limit) {
                         break;
                     }
+                    $skip += 999;
                 }
             }
         }
-
     }
 
-    public function getTokenFromDeviceTokens($deviceTokens)
+    public function sendToToken($token, $platform, $data, $lang)
     {
-        $tokens = ["ios" => [], "android" => []];
-        if ($deviceTokens->count() > 0) {
-            $tokens['ios'] 		= $deviceTokens->where('platform', 'IOS');
-
-            $tokens['android']  = $deviceTokens->where('platform', 'ANDROID');
+        $method = "push".$platform;
+        if(method_exists($this, $method)) {
+            $this->{"push".$platform}($data, [$token], $lang);
         }
+        throw new Exception("$platform not support");
 
-        return $tokens;
     }
 
-    public function sendNotification($devices, $request)
+    public function sendToDevice($deviceId, $data)
     {
-        foreach (config('translatable.locales') as $lang) {
+        $device = $this->deviceModel->findOrFail($deviceId);
+        $this->sendToToken($device->device_token, $device->platform, $data, $device->lang);
 
-            // FILTER IOS DEVICES
-            if ($devices['ios']) {
-                $iosTokens = $devices['ios']->where('lang', $lang)->pluck('device_token')->toArray();
+    }
 
 
-                $regIdIOS = array_chunk($chunkIOS, 999);
+    public function sendForUser($user, $data)
+    {
 
-                foreach ($regIdIOS as $iTokens) {
-                    $this->PushIOS($request, $iTokens, $lang);
-                }
-            }
+        // langue
+        foreach (config("fcm-firebase.langues") as $lang) {
 
-            // FILTER ANDROID DEVICES
-            if ($devices['android']) {
-                $androidTokens = $devices['android']->where('lang', $lang)->pluck('device_token')->toArray();
+            // platform
+            foreach (["IOS", "ANDROID"] as  $platform) {
 
-                $tokensAndroid = $this->uniqueTokens($androidTokens);
+                $skip = 0;
+                $limit = 999;
+                // devices
+                while (true) {
+                    $devices = $user->deviceTokens()->select("device_token")->distinct()
+                                ->where("platform", $platform)
+                                ->where("lang", $lang)
+                                ->skip($skip)->take($limit)->pluck("device_token")->toArray();
+                    $countDevices = count($devices);
+                    if($countDevices > 0) {
+                        $this->{"push".$platform}($data, $devices, $lang);
 
-                $regIdAndroid = array_chunk($tokensAndroid, 999);
-
-                foreach ($regIdAndroid as $aTokens) {
-                    $this->PushANDROID($request, $aTokens, $lang);
+                    }
+                    if($countDevices < $limit) {
+                        break;
+                    }
+                    $skip += 999;
                 }
             }
         }
 
-        return true;
     }
-
 
 
     public function pushIOS($data, $tokens, $lang)
@@ -138,18 +147,18 @@ class FcmFirebaseService
 
 
 
-        return $this->push($fields_ios);
+        return $this->push($fields_ios, "IOS - $lang");
     }
 
     public function pushANDROID($data, $tokens, $lang)
     {
         $notification = [
           'title'    => $data['title'][$lang],
-                    'body'     => $data['description'][$lang],
+          'body'     => $data['description'][$lang],
           'sound'    => 'default',
           'priority' => 'high',
-          "type"     => $data['type'] ? $data['type'] : 'general',
-          "id"       => $data['id'],
+          "type"     => $data['type'] ??  'general',
+          "id"       => $data['id'] ?? -1,
         ];
 
         $fields_android = [
@@ -157,10 +166,10 @@ class FcmFirebaseService
             'data'             => $notification
         ];
 
-        return $this->push($fields_android);
+        return $this->push($fields_android, "Andriod - $lang");
     }
 
-    public function push($fields)
+    public function push($fields, $platform = "")
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
@@ -181,14 +190,15 @@ class FcmFirebaseService
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($ch);
         if ($result === false) {
+            \Log::channel('single')->debug("FCM Send Error: ". curl_error($ch));
             die('FCM Send Error: ' . curl_error($ch));
         }
         curl_close($ch);
         if(config("fcm-firebase.allow_fcm_log")) {
-            Log::channel('single')->debug("================================== FCM ==============");
-            Log::channel('single')->debug($result);
-            Log::channel('single')->debug('Sent: ' . count($fields['registration_ids']));
-            Log::channel('single')->debug("================================== End FCM ==============");
+            \Log::channel('single')->debug("================================== FCM $platform ==============");
+            \Log::channel('single')->debug($result);
+            \Log::channel('single')->debug('Sent: ' . count($fields['registration_ids']));
+            \Log::channel('single')->debug("================================== End FCM ==============");
         }
         return $result;
     }

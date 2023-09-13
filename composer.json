@@ -57,7 +57,7 @@
                 "Tocaanco\\FcmFirebase\\FcmFirebaseServiceProvider"
             ],
             "aliases": {
-                "LaravelPackageExample": "KrisOzolins\\LaravelPackageExample\\Facades\\LaravelPackageExample"
+                "FcmFirebase": "Tocaanco\\FcmFirebase\\Facades\\FcmFirebase"
             }
         }
     }

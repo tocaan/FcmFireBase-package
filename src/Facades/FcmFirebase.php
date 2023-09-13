@@ -13,6 +13,6 @@ class FcmFirebase extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'FcmFirebaseService';
+        return \Tocaanco\FcmFirebase\FcmFirebaseService::class;
     }
 }
