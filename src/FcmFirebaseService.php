@@ -12,9 +12,10 @@ class FcmFirebaseService
     {
         $this->deviceModel = new (config("fcm-firebase.device_model"));
     }
- 
-    public function x(){
-        
+
+    public function x()
+    {
+
     }
 
     public function registerToken($data)
@@ -93,32 +94,38 @@ class FcmFirebaseService
 
     public function sendForUser($user, $data)
     {
+        if($user instanceof IFcmFirebaseDevice) {
 
-        // langue
-        foreach (config("fcm-firebase.langues") as $lang) {
 
-            // platform
-            foreach (["IOS", "ANDROID"] as  $platform) {
+            // langue
+            foreach (config("fcm-firebase.langues") as $lang) {
 
-                $skip = 0;
-                $limit = 999;
-                // devices
-                while (true) {
-                    $devices = $user->deviceTokens()->select("device_token")->distinct()
-                                ->where("platform", $platform)
-                                ->where("lang", $lang)
-                                ->skip($skip)->take($limit)->pluck("device_token")->toArray();
-                    $countDevices = count($devices);
-                    if($countDevices > 0) {
-                        $this->{"push".$platform}($data, $devices, $lang);
+                // platform
+                foreach (["IOS", "ANDROID"] as  $platform) {
 
+                    $skip = 0;
+                    $limit = 999;
+                    // devices
+                    while (true) {
+                        $devices = $user->deviceTokens()->select("device_token")->distinct()
+                                    ->where("platform", $platform)
+                                    ->where("lang", $lang)
+                                    ->skip($skip)->take($limit)->pluck("device_token")->toArray();
+                        $countDevices = count($devices);
+                        if($countDevices > 0) {
+                            $this->{"push".$platform}($data, $devices, $lang);
+
+                        }
+                        if($countDevices < $limit) {
+                            break;
+                        }
+                        $skip += 999;
                     }
-                    if($countDevices < $limit) {
-                        break;
-                    }
-                    $skip += 999;
                 }
             }
+
+        }else{
+            throw InvalidConfiguration::userNotSupportFcm();
         }
 
     }
