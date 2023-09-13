@@ -12,4 +12,10 @@ class InvalidConfiguration extends Exception
     {
         return new static('EXAMPLE: You must provide a valid version.');
     }
+
+    public static function userNotSupportFcm()
+    {
+        return new static('User Not support fcm');
+    }
+
 }
