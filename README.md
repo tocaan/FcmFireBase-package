@@ -13,7 +13,7 @@ must add this in composer.json  before require (must sure you have permission in
 "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:Tocaanco/FcmFireBas.git"
+            "url": "git@github.com:Tocaanco/FcmFireBase.git"
         }
     ],
 ```
