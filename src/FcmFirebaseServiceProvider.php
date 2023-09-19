@@ -82,7 +82,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [$this->packageName];
+        return ["fcmfirebase"];
     }
 
     /**

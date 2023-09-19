@@ -1,6 +1,6 @@
 {
     "name": "tocaanco/fcmfirebase",
-    "description": "Allow you to use it send fcm firbase notification",
+    "description": "Allow you to use it send fcm firebase notification",
     "license": "MIT",
     "version": "1.0.0",
     "authors": [
