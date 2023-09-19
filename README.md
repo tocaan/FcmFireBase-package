@@ -13,13 +13,13 @@ must add this in composer.json  before require (must sure you have permission in
 "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:Tocaanco/FcmFireBas.git"
+            "url": "git@github.com:Tocaanco/FcmFireBase.git"
         }
     ],
 ```
 
 ```
-composer require tocaanco/fcmfirebase
+composer require tocaanco/fcmfirebase dev-master
 ```
 
 And add the service provider in config/app.php:
@@ -100,5 +100,54 @@ to logout user
 
 ```
 FcmFirebase::logoutUser($user)
-``
+```        
+
+
+to use it in the Notification class  can use this channel `FcmChannelTokens` and implement this method `toFcm`
+
+```
+     /**
+     * Get the notification's delivery channels.
+     *
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return [FcmChannelTokens::class];
+    }
+
+
+     /**
+     * Get the array representation of the notification.
+     *
+     * @param mixed $notifiable
+     * @return array
+     */
+    public function toFcm($notifiable)
+    {
+        return [
+        "title" => [
+            "ar" => "test",
+            "en" => "test"
+        ],
+        "description" => [
+            "ar" => "test",
+            "en" => "test"
+        ],
+        "type"=>"general",
+        "id"  => -1
+        ];
+    }
+
+   
+        
+```
+
+To allow debug the response from firebase need to allow this in .env
+
+```
+FCM_ALLOW_LOG= true 
+```
+
 
