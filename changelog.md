@@ -10,6 +10,7 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 - Add service to handle the logic for fcm
 - Add job to send to all devices token in our database
 - Add channel to notification
+- Make package support morph relation
 
 ### Changed
 - Nothing

@@ -12,33 +12,47 @@ class FcmFirebaseService
     {
         $this->deviceModel = new (config("fcm-firebase.device_model"));
     }
-
-    public function x()
-    {
-
-    }
-
     public function registerToken($data)
     {
+        $data = [
+            'device_token' => $data['device_token'],
+            'platform'     => $data['platform'],
+            'lang'         => $data["lang"] ?? app()->getLocale(),
+        ];
+
+        if(config("fcm-firebase.allow_morph")) {
+            $morph      = config("fcm-firebase.morph");
+            $data[$morph."_id"] = $data["user_id"] ?? null;
+            $data[$morph."_type"] = $data["user_type"] ?? null;
+        } else {
+            $data[config("fcm-firebase.user_colum")] = $data['user_id'];
+        }
+
         $this->deviceModel->updateOrCreate(
             [
             'device_token' => $data['device_token'],
             ],
-            [
-            'device_token' => $data['device_token'],
-            'user_id'      => $data['user_id'],
-            'platform'     => $data['platform'],
-            'lang'         => $data["lang"] ?? app()->getLocale(),
-            ]
+            $data
         );
     }
 
-    public function logoutUser($user)
+    public function logoutUser($user, $deviceId = null)
     {
         if($user instanceof IFcmFirebaseDevice) {
-            $user->devices()->update([
-                config("fcm-firebase.model") => null
-            ]);
+            $baseQuery = $user->devices();
+            if($deviceId) {
+                $baseQuery->where("id", $deviceId);
+            }
+            if(config("fcm-firebase.allow_morph")) {
+                $morph = config("fcm-firebase.morph");
+                $baseQuery->update([
+                    $morph."_id" => null,$morph."_type" => null
+                ]);
+            } else {
+                $baseQuery->update([
+                    config("fcm-firebase.user_colum") => null
+                ]);
+            }
         } else {
             throw InvalidConfiguration::userNotSupportFcm();
         }
@@ -124,7 +138,7 @@ class FcmFirebaseService
                 }
             }
 
-        }else{
+        } else {
             throw InvalidConfiguration::userNotSupportFcm();
         }
 

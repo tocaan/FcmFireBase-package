@@ -18,8 +18,18 @@ class CreateDeviceTokensTable extends Migration
             $table->string('device_token', 255)->nullable();
             $table->string('lang')->default('en');
             $table->string('platform', 20)->index()->nullable();
-            $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            if(config("fcm-firebase.allow_morph", false)) {
+                $morph = config("fcm-firebase.morph");
+                $table->nullableMorphs(config("fcm-firebase.morph"));
+                if(config("fcm-firebase.morph_index")){
+                    $table->index([$morph."_id",$morph."_type" ]);
+                }
+            } else {
+                $table->bigInteger('user_id')->unsigned()->nullable();
+                $table->foreign('user_id')->references('id')->on('users')
+                      ->onUpdate('cascade')->onDelete('cascade');
+            }
+
             $table->primary("id");
             $table->timestamps();
         });

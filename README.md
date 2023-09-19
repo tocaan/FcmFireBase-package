@@ -151,3 +151,12 @@ FCM_ALLOW_LOG= true
 ```
 
 
+
+To allow morph in device model go to config and change the following config
+
+```
+"allow_morph"=> true,
+"morph" =>"owner", the morph relation name
+"morph_index"=> false, // if need to make morph index
+
+```
