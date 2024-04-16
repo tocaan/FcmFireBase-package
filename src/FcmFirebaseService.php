@@ -3,14 +3,17 @@
 namespace Tocaanco\FcmFirebase;
 
 use Exception;
+use Tocaanco\FcmFirebase\Contracts\FcmInterface;
 use Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmFirebaseService
 {
     public $deviceModel ;
-    public function __construct()
+    public $fcmService ;
+    public function __construct(FcmInterface $fcmService)
     {
         $this->deviceModel = new (config("fcm-firebase.device_model"));
+        $this->fcmService = $fcmService;
     }
     public function registerToken($data)
     {
@@ -166,9 +169,7 @@ class FcmFirebaseService
             'data'             => $data,
         ];
 
-
-
-        return $this->push($fields_ios, "IOS - $lang");
+        return $this->fcmService->push($fields_ios, "IOS", $lang);
     }
 
     public function pushANDROID($data, $tokens, $lang)
@@ -187,7 +188,7 @@ class FcmFirebaseService
             'data'             => $notification
         ];
 
-        return $this->push($fields_android, "Andriod - $lang");
+        return $this->fcmService->push($fields_android, "Android", $lang);
     }
 
     public function push($fields, $platform = "")

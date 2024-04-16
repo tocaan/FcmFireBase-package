@@ -160,3 +160,12 @@ To allow morph in device model go to config and change the following config
 "morph_index"=> false, // if need to make morph index
 
 ```
+
+
+To User package in old package will need to follow this step
+
+```
+-  instal package 
+-  remove call this `$this->Push` and use this FcmPush::push($fields, $platform, $lang)
+
+```

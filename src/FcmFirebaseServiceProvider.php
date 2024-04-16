@@ -3,6 +3,8 @@
 namespace Tocaanco\FcmFirebase;
 
 use Illuminate\Support\ServiceProvider;
+use Tocaanco\Events\InvalidTokensEvent;
+use Tocaanco\FcmFirebase\Contracts\FcmInterface;
 use Tocaanco\FcmFirebase\FcmFirebaseService;
 use Tocaanco\FcmFirebase\Facades\FcmFirebase;
 use Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration;
@@ -69,6 +71,13 @@ class FcmFirebaseServiceProvider extends ServiceProvider
             $this->guardAgainstInvalidConfiguration($config);
 
             return new FcmFirebaseService();
+        });
+
+
+        $this->app->bind(FcmInterface::class, function ($app) use ($config) {
+            // Checks if configuration is valid
+
+            return new FcmService();
         });
 
         // Make alias for use with package name
@@ -149,5 +158,13 @@ class FcmFirebaseServiceProvider extends ServiceProvider
     protected function isLumen()
     {
         return str_contains($this->app->version(), 'Lumen') === true;
+    }
+
+    protected function registerEvents()
+    {
+        // Register your events here
+        $this->app->bind(InvalidTokensEvent::class, function ($app, $tokens) {
+            return new InvalidTokensEvent($tokens);
+        });
     }
 }
