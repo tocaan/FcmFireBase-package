@@ -4,11 +4,11 @@ namespace Tocaanco\FcmFirebase;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Contract\Messaging;
-use Tocaanco\Events\InvalidTokensEvent;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Tocaanco\FcmFirebase\Contracts\FcmInterface;
+use Tocaanco\FcmFirebase\Events\InvalidTokensEvent;
 
 class FcmService implements FcmInterface
 {
@@ -66,7 +66,9 @@ class FcmService implements FcmInterface
             $this->logger("Firebase Admin SDK : 0 Devices found");
             return;
         }
-
+        if(config("fcm-firebase.allow_fcm_token_log")) {
+            $this->logger("Firebase Admin SDk : Tokens : " . json_encode($tokens));
+        }
         $this->logger("Firebase Admin SDK : Sending " . count($tokens) . " firebase notifications.");
         $sendReport = $this->messaging->sendMulticast($message, $tokens);
         $this->logger("Firebase Admin SDK : {$sendReport->failures()->count()} notifications failed");

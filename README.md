@@ -18,6 +18,20 @@ must add this in composer.json  before require (must sure you have permission in
     ],
 ```
 
+if package still private will need to add `github-oauth` in config attribute in composer.json
+`github.com` this token generate from setting can create or get from admin of repo 
+
+```
+ "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "github-oauth": {
+            "github.com": "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"
+        }
+    },
+``
+
 ```
 composer require tocaanco/fcmfirebase dev-master
 ```

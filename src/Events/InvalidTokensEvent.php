@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\Events;
+namespace Tocaanco\FcmFirebase\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
