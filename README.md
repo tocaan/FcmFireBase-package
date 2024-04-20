@@ -30,7 +30,7 @@ if package still private will need to add `github-oauth` in config attribute in 
             "github.com": "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"
         }
     },
-``
+```
 
 ```
 composer require tocaanco/fcmfirebase dev-master
