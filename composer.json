@@ -1,5 +1,5 @@
 {
-    "name": "tocaanco/fcmfirebase",
+    "name": "tocaan/fcmfirebase",
     "description": "Allow you to use it send fcm firebase notification",
     "license": "MIT",
     "version": "1.0.0",
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Tocaanco\\FcmFirebase\\": "src/"
+            "Tocaan\\FcmFirebase\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tocaanco\\FcmFirebase\\Tests\\": "tests"
+            "Tocaan\\FcmFirebase\\Tests\\": "tests"
         }
     },
     "suggest": {
@@ -55,10 +55,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tocaanco\\FcmFirebase\\FcmFirebaseServiceProvider"
+                "Tocaan\\FcmFirebase\\FcmFirebaseServiceProvider"
             ],
             "aliases": {
-                "FcmFirebase": "Tocaanco\\FcmFirebase\\Facades\\FcmFirebase"
+                "FcmFirebase": "Tocaan\\FcmFirebase\\Facades\\FcmFirebase"
             }
         }
     }

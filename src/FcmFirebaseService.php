@@ -1,10 +1,10 @@
 <?php
 
-namespace Tocaanco\FcmFirebase;
+namespace Tocaan\FcmFirebase;
 
 use Exception;
-use Tocaanco\FcmFirebase\Contracts\FcmInterface;
-use Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration;
+use Tocaan\FcmFirebase\Contracts\FcmInterface;
+use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmFirebaseService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Requests;
+namespace Tocaan\FcmFirebase\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

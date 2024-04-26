@@ -2,7 +2,7 @@
 
 return [
 
-    "device_model" => \Tocaanco\FcmFirebase\Models\DeviceToken::class,
+    "device_model" => \Tocaan\FcmFirebase\Models\DeviceToken::class,
     "user_colum"   => "user_id",
     "allow_fcm_log" => env("FCM_ALLOW_LOG", true),
     "allow_fcm_token_log" => env("FCM_ALLOW_TOKENS_LOG", true),

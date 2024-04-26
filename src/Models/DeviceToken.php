@@ -1,11 +1,11 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Models;
+namespace Tocaan\FcmFirebase\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class DeviceToken extends Model
 {
-    use \Tocaanco\FcmFirebase\Traits\UsesUuid;
+    use \Tocaan\FcmFirebase\Traits\UsesUuid;
     protected $fillable = ['platform','user_id','device_token','lang'];
 }

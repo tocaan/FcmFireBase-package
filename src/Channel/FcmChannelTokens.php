@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Channel;
+namespace Tocaan\FcmFirebase\Channel;
 
 use Illuminate\Notifications\Notification;
 use Modules\DeviceToken\Traits\FCMTraitUserTokens;
@@ -17,6 +17,6 @@ class FcmChannelTokens
     public function send($notifiable, Notification $notification)
     {
         $message = $notification->toFcm($notifiable);
-        \Tocaanco\FcmFirebase\Facades\FcmFirebase::sendForUser($notifiable, $message);
+        \Tocaan\FcmFirebase\Facades\FcmFirebase::sendForUser($notifiable, $message);
     }
 }

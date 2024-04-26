@@ -8,44 +8,20 @@ The package allow to send fcm firebase message
 
 Install via composer:
 
-must add this in composer.json  before require (must sure you have permission in github repo)
 ```
-"repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:Tocaanco/FcmFireBase.git"
-        }
-    ],
-```
-
-if package still private will need to add `github-oauth` in config attribute in composer.json
-`github.com` this token generate from setting can create or get from admin of repo 
-
-```
- "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "github-oauth": {
-            "github.com": "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"
-        }
-    },
-```
-
-```
-composer require tocaanco/fcmfirebase dev-master
+composer require tocaan/fcmfirebase dev-master
 ```
 
 And add the service provider in config/app.php:
 
 ```php
-Tocaanco\\FcmFirebase\\FcmFirebaseServiceProvider,
+Tocaan\\FcmFirebase\\FcmFirebaseServiceProvider,
 ```
 
 Then register Facade class aliase:
 
 ```php
-'FcmFirebase' => \Tocaanco\FcmFirebase\Facades\FcmFirebase::class,
+'FcmFirebase' => \Tocaan\FcmFirebase\Facades\FcmFirebase::class,
 ```
 
 ### Publish assets:
@@ -56,11 +32,11 @@ php artisan vendor:publish
 ### Getting Started
 
 To start use in User Model to enable use FcmChannelTokens and sendForUser in FcmFirebase Facade 
--  must implements `\Tocaanco\FcmFirebase\Contracts\IFcmFirebaseDevice`and use trait `  \Tocaanco\FcmFirebase\Traits\FcmDeviceTrait`
+-  must implements `\Tocaan\FcmFirebase\Contracts\IFcmFirebaseDevice`and use trait `  \Tocaan\FcmFirebase\Traits\FcmDeviceTrait`
 ```
-class User extends Authenticatable implements  \Tocaanco\FcmFirebase\Contracts\IFcmFirebaseDevice
+class User extends Authenticatable implements  \Tocaan\FcmFirebase\Contracts\IFcmFirebaseDevice
 {
-   use \Tocaanco\FcmFirebase\Traits\FcmDeviceTrait
+   use \Tocaan\FcmFirebase\Traits\FcmDeviceTrait
 }
 ```
 

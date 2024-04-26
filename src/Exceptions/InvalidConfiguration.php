@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Exceptions;
+namespace Tocaan\FcmFirebase\Exceptions;
 
 use Exception;
 

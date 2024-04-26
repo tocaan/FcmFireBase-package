@@ -1,8 +1,8 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Tests;
+namespace Tocaan\FcmFirebase\Tests;
 
-use Tocaanco\FcmFirebase\FcmFirebaseServiceProvider;
+use Tocaan\FcmFirebase\FcmFirebaseServiceProvider;
 use Orchestra\TestBench\TestCase as OrchestraTestCase;
 
 abstract class PackageTestCase extends OrchestraTestCase

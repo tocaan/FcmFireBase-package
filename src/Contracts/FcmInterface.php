@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Contracts;
+namespace Tocaan\FcmFirebase\Contracts;
 
 use Kreait\Firebase\Messaging\CloudMessage;
 

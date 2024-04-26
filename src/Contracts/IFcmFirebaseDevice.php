@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Contracts;
+namespace Tocaan\FcmFirebase\Contracts;
 
 interface IFcmFirebaseDevice
 {

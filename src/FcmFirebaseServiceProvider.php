@@ -1,13 +1,13 @@
 <?php
 
-namespace Tocaanco\FcmFirebase;
+namespace Tocaan\FcmFirebase;
 
 use Illuminate\Support\ServiceProvider;
-use Tocaanco\Events\InvalidTokensEvent;
-use Tocaanco\FcmFirebase\Contracts\FcmInterface;
-use Tocaanco\FcmFirebase\FcmFirebaseService;
-use Tocaanco\FcmFirebase\Facades\FcmFirebase;
-use Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration;
+use Tocaan\Events\InvalidTokensEvent;
+use Tocaan\FcmFirebase\Contracts\FcmInterface;
+use Tocaan\FcmFirebase\FcmFirebaseService;
+use Tocaan\FcmFirebase\Facades\FcmFirebase;
+use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmFirebaseServiceProvider extends ServiceProvider
 {
@@ -18,7 +18,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
      *
      * @var  string
      */
-    protected $vendorName = 'tocaanco';
+    protected $vendorName = 'tocaan';
     protected $packageName = 'fcm-firebase';
 
     /**
@@ -143,7 +143,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
      *
      * @param  array|null $config the package configuration
      * @throws InvalidConfiguration exception or null
-     * @see  \Tocaanco\FcmFirebase\Exceptions\InvalidConfiguration
+     * @see  \Tocaan\FcmFirebase\Exceptions\InvalidConfiguration
      */
     protected function guardAgainstInvalidConfiguration(array $config = null)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Facades;
+namespace Tocaan\FcmFirebase\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -13,6 +13,6 @@ class FcmFirebase extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return \Tocaanco\FcmFirebase\FcmFirebaseService::class;
+        return \Tocaan\FcmFirebase\FcmFirebaseService::class;
     }
 }

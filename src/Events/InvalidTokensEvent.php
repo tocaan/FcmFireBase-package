@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Events;
+namespace Tocaan\FcmFirebase\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -12,13 +12,14 @@ class InvalidTokensEvent
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+    public $tokens;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public array $tokens)
+    public function __construct($tokens)
     {
-        //
+        $this->tokens = $tokens;
     }
 
     /**

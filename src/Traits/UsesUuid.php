@@ -1,6 +1,6 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Traits;
+namespace Tocaan\FcmFirebase\Traits;
 
 use Illuminate\Support\Str;
 

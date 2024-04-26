@@ -1,8 +1,8 @@
 <?php
 
-namespace Tocaanco\FcmFirebase\Tests\Feature;
+namespace Tocaan\FcmFirebase\Tests\Feature;
 
-use Tocaanco\FcmFirebase\Tests\PackageTestCase;
+use Tocaan\FcmFirebase\Tests\PackageTestCase;
 
 
 class ExampleTest extends PackageTestCase

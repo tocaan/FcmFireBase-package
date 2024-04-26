@@ -1,14 +1,14 @@
 <?php
 
-namespace Tocaanco\FcmFirebase;
+namespace Tocaan\FcmFirebase;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
-use Tocaanco\FcmFirebase\Contracts\FcmInterface;
-use Tocaanco\FcmFirebase\Events\InvalidTokensEvent;
+use Tocaan\FcmFirebase\Contracts\FcmInterface;
+use Tocaan\FcmFirebase\Events\InvalidTokensEvent;
 
 class FcmService implements FcmInterface
 {
