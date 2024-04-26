@@ -93,7 +93,7 @@ class FcmService implements FcmInterface
         $this->logger("Start Push Fcm for $platform and lang ($lang)");
         $fieldData = isset($field["data"]) ? $field["data"] : [] ;
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
-        $message = $this->buildFirebaseCloudMessage([
+        $message = $this->buildFirebaseCloudMessage(
             [
                 "title" => $fieldData["title"],
                 "body" => $fieldData["body"],
@@ -103,7 +103,7 @@ class FcmService implements FcmInterface
                 "type" => $fieldData["type"] ?? "general",
                 "id"  => $fieldData["id"] ?? -1
             ]
-             ]);
+        );
 
         $this->sendToTokens($field["registration_ids"], $message);
         $this->logger("End Push Fcm for $platform and lang ($lang)");
