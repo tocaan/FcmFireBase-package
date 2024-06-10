@@ -70,7 +70,7 @@ class FcmFirebaseServiceProvider extends ServiceProvider
             // Checks if configuration is valid
             $this->guardAgainstInvalidConfiguration($config);
 
-            return new FcmFirebaseService();
+            return new FcmFirebaseService(app()->make(FcmInterface::class));
         });
 
 
