@@ -16,9 +16,11 @@ class DeviceTokenRequest extends FormRequest
         return [
             //
             "user_id" => "nullable|exists:users,id",
-            "device_token"=> "nullable",
+            "device_token" => "nullable",
             "platform" => "nullable|in:IOS,ANDROID",
             "lang"    => "nullable",
+            "model"   => "nullable",
+            "app_version" => "nullable",
         ];
     }
 

@@ -4,6 +4,7 @@ namespace Tocaan\FcmFirebase;
 
 use Exception;
 use Tocaan\FcmFirebase\Contracts\FcmInterface;
+use Tocaan\FcmFirebase\Contracts\IFcmFirebaseDevice;
 use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmFirebaseService
