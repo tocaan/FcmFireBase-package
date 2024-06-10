@@ -21,6 +21,7 @@ class DeviceTokenRequest extends FormRequest
             "lang"    => "nullable",
             "model"   => "nullable",
             "app_version" => "nullable",
+            "os_version"  => "nullable"
         ];
     }
 

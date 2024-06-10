@@ -22,6 +22,9 @@ class FcmFirebaseService
             'device_token' => $data['device_token'],
             'platform'     => $data['platform'],
             'lang'         => $data["lang"] ?? app()->getLocale(),
+            'model'         => $data["model"] ?? null,
+            'app_version'   => $data["app_version"] ?? null,
+            'os_version'    => $data["os_version"] ?? null,
         ];
 
         if(config("fcm-firebase.allow_morph")) {
