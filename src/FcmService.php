@@ -108,11 +108,15 @@ class FcmService implements FcmInterface
             [
                 "title" => $fieldData["title"],
                 "body" => $fieldData["body"],
-                "badge" => $fieldData["badge"] ?? 0
+                "badge" => $fieldData["badge"] ?? 0 ,
+                "icon"  => $fieldData["icon"] ?? null,
+                "domain" => $fieldData["domain"] ?? null
             ],
             [
                 "type" => $fieldData["type"] ?? "general",
-                "id"  => $fieldData["id"] ?? -1
+                "id"  => $fieldData["id"] ?? -1,
+                "domain" => $fieldData["domain"] ?? null,
+                "click_action" => $fieldData["click_action"] ?? null,
             ]
         );
 
