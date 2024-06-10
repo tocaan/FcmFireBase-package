@@ -140,7 +140,13 @@ To allow debug the response from firebase need to allow this in .env
 FCM_ALLOW_LOG= true 
 ```
 
+To Disabled init parse SERVICE_ACCOUNT when init but must call `setServiceAccount` and set path to avoid get exception `serviceAccountNotConfigure`
 
+```
+FCM_PARSE_SERVICE_ACCOUNT_IN_INIT= false
+```
+
+`setServiceAccount` method allow user to override SERVICE_ACCOUNT file 
 
 To allow morph in device model go to config and change the following config
 

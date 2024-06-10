@@ -18,4 +18,9 @@ class InvalidConfiguration extends Exception
         return new static('User Not support fcm');
     }
 
+    public static function serviceAccountNotConfigure()
+    {
+        return new static('serviceAccount not configure');
+    }
+
 }

@@ -9,6 +9,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Tocaan\FcmFirebase\Contracts\FcmInterface;
 use Tocaan\FcmFirebase\Events\InvalidTokensEvent;
+use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmService implements FcmInterface
 {
@@ -16,9 +17,17 @@ class FcmService implements FcmInterface
 
     public function __construct()
     {
-        $factory = (new Factory())->withServiceAccount(config("fcm-firebase.firebase_credentials"));
+        if(config("fcm-firebase.parse_service_account_in_init")) {
+            $factory = (new Factory())->withServiceAccount(config("fcm-firebase.firebase_credentials"));
+            $this->messaging = $factory->createMessaging();
+        }
+    }
 
+    public function setServiceAccount($firebaseCredentialsPath)
+    {
+        $factory = (new Factory())->withServiceAccount($firebaseCredentialsPath);
         $this->messaging = $factory->createMessaging();
+        return $this;
     }
 
     /**
@@ -60,7 +69,9 @@ class FcmService implements FcmInterface
      */
     public function sendToTokens(array $tokens, CloudMessage $message)
     {
-
+        if(!$this->messaging) {
+            InvalidConfiguration::serviceAccountNotConfigure();
+        }
 
         if (count($tokens) == 0) {
             $this->logger("Firebase Admin SDK : 0 Devices found");

@@ -14,5 +14,7 @@ interface FcmInterface
 
     public function push(array $field, string $platform="andorid");
 
+    public function setServiceAccount($firebaseCredentialsPath);
+
 
 }

@@ -195,6 +195,12 @@ class FcmFirebaseService
         return $this->fcmService->push($fields_android, "Android", $lang);
     }
 
+    public function setServiceAccount($firebaseCredentialsPath)
+    {
+        $this->fcmService->setServiceAccount($firebaseCredentialsPath);
+        return $this;
+    }
+
     public function push($fields, $platform = "")
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
