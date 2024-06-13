@@ -3,7 +3,6 @@
 namespace Tocaan\FcmFirebase;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -13,7 +12,7 @@ use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmService implements FcmInterface
 {
-    public Messaging $messaging;
+    public  $messaging;
 
     public function __construct()
     {
@@ -40,7 +39,6 @@ class FcmService implements FcmInterface
         return CloudMessage::new()
             ->withNotification(Notification::fromArray($notificationData))
             ->withData($data)
-            ->withHighestPossiblePriority()
             ->withDefaultSounds()
             ->withApnsConfig(
                 ApnsConfig::new()
