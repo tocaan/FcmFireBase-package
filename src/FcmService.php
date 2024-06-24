@@ -118,7 +118,6 @@ class FcmService implements FcmInterface
 
         $message = $this->buildFirebaseCloudMessage(
             [
-
             "title" => $fieldData["title"],
             "body" => $fieldData["body"],
             "badge" => $fieldData["badge"] ?? 0 ,
@@ -163,6 +162,6 @@ class FcmService implements FcmInterface
      */
     public function platformSupportNotificationKey($platform)
     {
-        return !in_array($platform, config("fcm-firebase.platform_not_need_notifications", ["android"]));
+        return !in_array(strtolower($platform), config("fcm-firebase.platform_not_need_notifications", ["android"]));
     }
 }
