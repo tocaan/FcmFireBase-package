@@ -12,7 +12,7 @@ use Tocaan\FcmFirebase\Exceptions\InvalidConfiguration;
 
 class FcmService implements FcmInterface
 {
-    public  $messaging;
+    public $messaging;
 
     public function __construct()
     {
@@ -162,6 +162,6 @@ class FcmService implements FcmInterface
      */
     public function platformSupportNotificationKey($platform)
     {
-        return !in_array($platform, config("fcm-firebase.platform_not_need_notifications", ["android"]));
+        return !in_array(strtolower($platform), config("fcm-firebase.platform_not_need_notifications", ["android"]));
     }
 }
