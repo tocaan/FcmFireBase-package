@@ -12,5 +12,6 @@ return [
     "morph" => "owner",
     "morph_index" => false,
     "firebase_credentials" => storage_path(env("FIREBASE_CREDENTIALS", "firebase.json")),
-    "parse_service_account_in_init" => env("FCM_PARSE_SERVICE_ACCOUNT_IN_INIT", true)
+    "parse_service_account_in_init" => env("FCM_PARSE_SERVICE_ACCOUNT_IN_INIT", true) ,
+    "platform_not_need_notifications" => ["android"]
 ];

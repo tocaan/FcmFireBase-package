@@ -33,20 +33,27 @@ class FcmService implements FcmInterface
     /**
      * @param array $notificationData
      * @param array $data
+     * @param bool  $platformSupportNotification
      * @return CloudMessage
      */
-    public function buildFirebaseCloudMessage(array $notificationData, array $data = []): CloudMessage
+    public function buildFirebaseCloudMessage(array $notificationData, array $data = [], $platformSupportNotification = true): CloudMessage
     {
-        return CloudMessage::new()
-            ->withNotification(Notification::fromArray($notificationData))
+        $message =  CloudMessage::new()
             ->withData($data)
             ->withHighestPossiblePriority()
-            ->withDefaultSounds()
             ->withApnsConfig(
                 ApnsConfig::new()
                 ->withBadge($notificationData["badge"] ?? 0)
             )
         ;
+
+        if($platformSupportNotification) {
+            $message =  $message->withNotification(Notification::fromArray($notificationData))
+                      ->withDefaultSounds();
+
+        }
+
+        return $message;
     }
 
     public function buildTranslationNotification($notificationData, $locale, $defaultLang = "ar")
@@ -99,31 +106,39 @@ class FcmService implements FcmInterface
      * @param string $platform
      * @return void
      */
-    public function push(array $field, string $platform = "andorid", $lang = "ar")
+    public function push(array $field, string $platform = "android", $lang = "ar")
     {
+        $platformSupportNotification = $this->platformSupportNotificationKey($platform);
+        $this->logger("*************** Pushing ******************");
+
+        $this->logger("$platform Support Notification key  : " .  ($platformSupportNotification ? "yes" : "no"));
         $this->logger("Start Push Fcm for $platform and lang ($lang)");
         $fieldData = isset($field["data"]) ? $field["data"] : [] ;
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
+
         $message = $this->buildFirebaseCloudMessage(
             [
-                "title" => $fieldData["title"],
-                "body" => $fieldData["body"],
-                "badge" => $fieldData["badge"] ?? 0 ,
-                "icon"  => $fieldData["icon"] ?? null,
-                "domain" => $fieldData["domain"] ?? null
+
+            "title" => $fieldData["title"],
+            "body" => $fieldData["body"],
+            "badge" => $fieldData["badge"] ?? 0 ,
+            "icon"  => $fieldData["icon"] ?? null,
+            "domain" => $fieldData["domain"] ?? null
             ],
-            [
-                "type" => $fieldData["type"] ?? "general",
-                "id"  => $fieldData["id"] ?? -1,
-                "domain" => $fieldData["domain"] ?? null,
-                "click_action" => $fieldData["click_action"] ?? null,
-                "title" => $fieldData["title"],
-                "body" => $fieldData["body"],
-            ]
+            array_merge(
+                $fieldData,
+                [
+                    "id" => isset($fieldData["id"]) ? $fieldData["id"] : -1
+                ]
+            ),
+            $platformSupportNotification
         );
 
         $this->sendToTokens($field["registration_ids"], $message);
         $this->logger("End Push Fcm for $platform and lang ($lang)");
+
+        $this->logger("*****************  End  ****************");
+
 
     }
 
@@ -138,5 +153,16 @@ class FcmService implements FcmInterface
         if(config("fcm-firebase.allow_fcm_log")) {
             logger($message);
         }
+    }
+
+    /**
+     * Check if platform support notification key
+     *
+     * @param string $platform
+     * @return bool
+     */
+    public function platformSupportNotificationKey($platform)
+    {
+        return !in_array($platform, config("fcm-firebase.platform_not_need_notifications", ["android"]));
     }
 }
