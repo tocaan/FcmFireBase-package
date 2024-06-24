@@ -117,6 +117,8 @@ class FcmService implements FcmInterface
                 "id"  => $fieldData["id"] ?? -1,
                 "domain" => $fieldData["domain"] ?? null,
                 "click_action" => $fieldData["click_action"] ?? null,
+                "title" => $fieldData["title"],
+                "body" => $fieldData["body"],
             ]
         );
 
