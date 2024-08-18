@@ -38,13 +38,18 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessage(array $notificationData, array $data = [], $platformSupportNotification = true): CloudMessage
     {
+        $config = ApnsConfig::fromArray([
+            'payload' => [
+                'aps' => [
+                    'badge' => $notificationData["badge"] ?? 0,
+                    'sound' => 'default',
+                ],
+            ],
+        ]);
         $message =  CloudMessage::new()
             ->withData($data)
             ->withHighestPossiblePriority()
-            ->withApnsConfig(
-                ApnsConfig::new()
-                ->withBadge($notificationData["badge"] ?? 0)
-            )
+            ->withApnsConfig($config)
         ;
 
         if($platformSupportNotification) {
@@ -91,11 +96,10 @@ class FcmService implements FcmInterface
         $sendReport = $this->messaging->sendMulticast($message, $tokens);
         $this->logger("Firebase Admin SDK : {$sendReport->failures()->count()} notifications failed");
         $this->logger("Firebase Admin SDK : {$sendReport->successes()->count()} notifications were successful");
-        $invalidTokens = $sendReport->invalidTokens();
-        if(count($invalidTokens)) {
+        $hasFailures = $sendReport->hasFailures();
+        if($hasFailures) {
             $this->logger("Firebase Admin SDK : Fire event Invalid Tokens");
             $this->logger("Firebase Admin SDK : Fire event Invalid Tokens");
-            event(new InvalidTokensEvent($invalidTokens));
         }
     }
 
