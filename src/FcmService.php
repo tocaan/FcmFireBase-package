@@ -3,7 +3,7 @@
 namespace Tocaan\FcmFirebase;
 
 use Kreait\Firebase\Factory;
-use Kreait\Firebase\Contract\Messaging;
+use Kreait\Firebase\Messaging;
 use Kreait\Firebase\Messaging\ApnsConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -48,7 +48,6 @@ class FcmService implements FcmInterface
         ]);
         $message =  CloudMessage::new()
             ->withData($data)
-            ->withHighestPossiblePriority()
             ->withApnsConfig($config)
         ;
 
