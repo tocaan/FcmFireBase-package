@@ -19,14 +19,14 @@ class FcmService implements FcmInterface
     {
         if(config("fcm-firebase.parse_service_account_in_init")) {
             $factory = (new Factory())->withServiceAccount(config("fcm-firebase.firebase_credentials"));
-            $this->messaging = $factory->createMessaging();
+            $this->messaging = $factory->create()->getMessaging();
         }
     }
 
     public function setServiceAccount($firebaseCredentialsPath)
     {
         $factory = (new Factory())->withServiceAccount($firebaseCredentialsPath);
-        $this->messaging = $factory->createMessaging();
+        $this->messaging = $factory->create()->getMessaging();
         return $this;
     }
 
