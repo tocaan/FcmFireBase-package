@@ -47,15 +47,16 @@ class FcmService implements FcmInterface
             ],
         ]);
         $message =  CloudMessage::new()
+            ->withNotification(Notification::fromArray($notificationData))
             ->withData($data)
             ->withApnsConfig($config)
         ;
 
-        if($platformSupportNotification) {
-            $message =  $message->withNotification(Notification::fromArray($notificationData))
-                      ->withDefaultSounds();
-
-        }
+//        if($platformSupportNotification) {
+//            $message =  $message->withNotification(Notification::fromArray($notificationData))
+//                      ->withDefaultSounds();
+//
+//        }
 
         return $message;
     }
