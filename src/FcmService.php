@@ -41,7 +41,7 @@ class FcmService implements FcmInterface
         $config = ApnsConfig::fromArray([
             'payload' => [
                 'aps' => [
-                    'badge' => $notificationData["badge"] ?? 0,
+                    'badge' => (int)$notificationData["badge"] ?? 0,
                     'sound' => 'default',
                 ],
             ],
