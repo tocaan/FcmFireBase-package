@@ -56,6 +56,33 @@ class FcmService implements FcmInterface
         return $message;
     }
 
+    /**
+     * @param array $notificationData
+     * @param array $data
+     * @param bool  $platformSupportNotification
+     * @return CloudMessage
+     */
+    public function buildFirebaseCloudMessageForTopic(array $notificationData, $topic, array $data = [], $platformSupportNotification = true): CloudMessage
+    {
+        $message =  CloudMessage::new()
+            ->withTarget('topic', $topic)
+            ->withData($data)
+            ->withHighestPossiblePriority()
+            ->withApnsConfig(
+                ApnsConfig::new()
+                ->withBadge($notificationData["badge"] ?? 0)
+            )
+        ;
+
+        if($platformSupportNotification) {
+            $message =  $message->withNotification(Notification::fromArray($notificationData))
+                      ->withDefaultSounds();
+
+        }
+
+        return $message;
+    }
+
     public function buildTranslationNotification($notificationData, $locale, $defaultLang = "ar")
     {
         return array_merge(
@@ -100,6 +127,21 @@ class FcmService implements FcmInterface
     }
 
     /**
+     * Send to tokens
+     *
+     * @param array $tokens
+     * @param CloudMessage $message
+     * @return void
+     */
+    public function sendToTopic(CloudMessage $message)
+    {
+        if(!$this->messaging) {
+            InvalidConfiguration::serviceAccountNotConfigure();
+        }
+        $this->logger("Firebase Admin SDk Message : {$message}");
+        $this->messaging->send($message);
+    }
+    /**
      * Push function
      *
      * @param array $field
@@ -134,6 +176,50 @@ class FcmService implements FcmInterface
         );
 
         $this->sendToTokens($field["registration_ids"], $message);
+        $this->logger("End Push Fcm for $platform and lang ($lang)");
+
+        $this->logger("*****************  End  ****************");
+
+
+    }
+
+    /**
+     * Push function
+     *
+     * @param array $field
+     * @param string $topic
+     * @param string $platform
+     * @return void
+     */
+    public function pushToTopic(array $field, $topic, $platform = "android", $lang = "ar")
+    {
+        $platformSupportNotification = $this->platformSupportNotificationKey($platform);
+        $this->logger("*************** Pushing ******************");
+
+        $this->logger("$platform Support Notification key  : " .  ($platformSupportNotification ? "yes" : "no"));
+        $this->logger("Start Push Fcm for $platform and lang ($lang)");
+        $fieldData = isset($field["data"]) ? $field["data"] : [] ;
+        $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
+
+        $message = $this->buildFirebaseCloudMessageForTopic(
+            [
+                "title" => $fieldData["title"],
+                "body" => $fieldData["body"],
+                "badge" => $fieldData["badge"] ?? 0 ,
+                "icon"  => $fieldData["icon"] ?? null,
+                "domain" => $fieldData["domain"] ?? null
+            ],
+            $topic,
+            array_merge(
+                $fieldData,
+                [
+                    "id" => isset($fieldData["id"]) ? $fieldData["id"] : -1
+                ]
+            ),
+            $platformSupportNotification
+        );
+
+        $this->sendToTopic($message);
         $this->logger("End Push Fcm for $platform and lang ($lang)");
 
         $this->logger("*****************  End  ****************");

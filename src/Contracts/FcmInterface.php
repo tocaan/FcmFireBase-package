@@ -14,6 +14,8 @@ interface FcmInterface
 
     public function push(array $field, string $platform="andorid");
 
+    public function pushToTopic(array $field, $topic, $platform="andorid", $locale = "ar");
+
     public function setServiceAccount($firebaseCredentialsPath);
 
 
