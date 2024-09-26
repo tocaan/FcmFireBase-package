@@ -141,6 +141,36 @@ class FcmService implements FcmInterface
         $this->logger("Firebase Admin SDk Message : {$message}");
         $this->messaging->send($message);
     }
+
+    /**
+     * Send to tokens
+     *
+     * @param array $tokens
+     * @param string $topic
+     * @return void
+     */
+    public function subscribeToTopic(array $tokens, $topic)
+    {
+        if(!$this->messaging) {
+            InvalidConfiguration::serviceAccountNotConfigure();
+        }
+        $this->messaging->subscribeToTopic($topic, $tokens);
+    }
+
+    /**
+     * Send to tokens
+     *
+     * @param array $tokens
+     * @param string $topic
+     * @return void
+     */
+    public function unsubscribeFromTopic(array $tokens, $topic)
+    {
+        if(!$this->messaging) {
+            InvalidConfiguration::serviceAccountNotConfigure();
+        }
+        $this->messaging->unsubscribeFromTopic($topic, $tokens);
+    }
     /**
      * Push function
      *
