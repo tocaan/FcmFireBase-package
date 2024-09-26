@@ -138,7 +138,7 @@ class FcmService implements FcmInterface
         if(!$this->messaging) {
             InvalidConfiguration::serviceAccountNotConfigure();
         }
-        $this->logger("Firebase Admin SDk Message : {$message}");
+        $this->logger("Firebase Admin SDk Message : " . json_encode($message));
         $this->messaging->send($message);
     }
 
