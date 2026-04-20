@@ -1,70 +1,65 @@
 {
-  "name": "tocaan/fcmfirebase",
-  "description": "Allow you to use it send fcm firebase notification",
-  "license": "MIT",
-  "version": "1.0.0",
-  "authors": [
-    {
-      "name": "AhmedSafwat1",
-      "email": "Ahmed.Safwat1235@gmail.com"
-    }
-  ],
-  "keywords": [
-    "Laravel",
-    "LaravelPackageExample",
-    "package",
-    "boilerplate"
-  ],
-  "require": {
-    "guzzlehttp/guzzle": "*",
-    "illuminate/bus": "*",
-    "illuminate/queue": "*",
-    "illuminate/support": "*",
-    "kreait/firebase-php": "^7.1"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^7.0|*",
-    "mockery/mockery": "^1.1",
-    "orchestra/testbench": "^3.7",
-    "orchestra/testbench-browser-kit": "^3.7",
-    "sempro/phpunit-pretty-print": "^1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Tocaan\\FcmFirebase\\": "src/"
+    "name": "tocaan/fcmfirebase",
+    "description": "Allow you to use it send fcm firebase notification",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "AhmedSafwat1",
+            "email": "Ahmed.Safwat1235@gmail.com"
+        }
+    ],
+    "keywords": ["Laravel", "LaravelPackageExample", "package", "boilerplate"],
+    "require": {
+        "guzzlehttp/guzzle": "*",
+        "illuminate/bus": "*",
+        "illuminate/queue": "*",
+        "illuminate/support": "*",
+        "kreait/firebase-php": "*"
     },
-    "files": [
-      "src/helpers.php"
-    ]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tocaan\\FcmFirebase\\Tests\\": "tests"
+    "require-dev": {
+        "phpunit/phpunit": "^7.0|*",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "^3.7",
+        "orchestra/testbench-browser-kit": "^3.7",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tocaan\\FcmFirebase\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tocaan\\FcmFirebase\\Tests\\": "tests"
+        }
+    },
+    "suggest": {
+        "sensiolabs/security-checker": "Required to use the security check command"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http');\"",
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Controllers');\"",
+            "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Middleware');\""
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tocaan\\FcmFirebase\\FcmFirebaseServiceProvider"
+            ],
+            "aliases": {
+                "FcmFirebase": "Tocaan\\FcmFirebase\\Facades\\FcmFirebase"
+            }
+        }
     }
-  },
-  "suggest": {
-    "sensiolabs/security-checker": "Required to use the security check command"
-  },
-  "scripts": {
-    "post-create-project-cmd": [
-      "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http');\"",
-      "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Controllers');\"",
-      "php -r \"mkdir('src'.DIRECTORY_SEPARATOR.'Http'.DIRECTORY_SEPARATOR.'Middleware');\""
-    ]
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "optimize-autoloader": true
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Tocaan\\FcmFirebase\\FcmFirebaseServiceProvider"
-      ],
-      "aliases": {
-        "FcmFirebase": "Tocaan\\FcmFirebase\\Facades\\FcmFirebase"
-      }
-    }
-  }
 }

@@ -17,7 +17,7 @@ class FcmService implements FcmInterface
 
     public function __construct()
     {
-        if(config("fcm-firebase.parse_service_account_in_init")) {
+        if (config("fcm-firebase.parse_service_account_in_init")) {
             $factory = (new Factory())->withServiceAccount(config("fcm-firebase.firebase_credentials"));
             $this->messaging = $factory->createMessaging();
         }
@@ -38,18 +38,18 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessage(array $notificationData, array $data = [], $platformSupportNotification = true): CloudMessage
     {
-        $message =  CloudMessage::new()
+        $message = CloudMessage::new()
             ->withData($data)
             ->withHighestPossiblePriority()
             ->withApnsConfig(
                 ApnsConfig::new()
-                ->withBadge($notificationData["badge"] ?? 0)
+                    ->withBadge($notificationData["badge"] ?? 0)
             )
         ;
 
-        if($platformSupportNotification) {
-            $message =  $message->withNotification(Notification::fromArray($notificationData))
-                      ->withDefaultSounds();
+        if ($platformSupportNotification) {
+            $message = $message->withNotification(Notification::fromArray($notificationData))
+                ->withDefaultSounds();
 
         }
 
@@ -64,19 +64,19 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessageForTopic(array $notificationData, $topic, array $data = [], $platformSupportNotification = true): CloudMessage
     {
-        $message =  CloudMessage::new()
+        $message = CloudMessage::new()
             ->withTarget('topic', $topic)
             ->withData($data)
             ->withHighestPossiblePriority()
             ->withApnsConfig(
                 ApnsConfig::new()
-                ->withBadge($notificationData["badge"] ?? 0)
+                    ->withBadge($notificationData["badge"] ?? 0)
             )
         ;
 
-        if($platformSupportNotification) {
-            $message =  $message->withNotification(Notification::fromArray($notificationData))
-                      ->withDefaultSounds();
+        if ($platformSupportNotification) {
+            $message = $message->withNotification(Notification::fromArray($notificationData))
+                ->withDefaultSounds();
 
         }
 
@@ -88,8 +88,8 @@ class FcmService implements FcmInterface
         return array_merge(
             $notificationData,
             [
-                "title" => $notificationData["title"][$locale] ?? $notificationData["title"][$defaultLang] ?? "" ,
-                "body"  => $notificationData["body"][$locale] ?? $notificationData["body"][$defaultLang] ?? ""
+                "title" => $notificationData["title"][$locale] ?? $notificationData["title"][$defaultLang] ?? "",
+                "body" => $notificationData["body"][$locale] ?? $notificationData["body"][$defaultLang] ?? ""
             ]
         );
     }
@@ -103,7 +103,7 @@ class FcmService implements FcmInterface
      */
     public function sendToTokens(array $tokens, CloudMessage $message)
     {
-        if(!$this->messaging) {
+        if (! $this->messaging) {
             InvalidConfiguration::serviceAccountNotConfigure();
         }
 
@@ -111,15 +111,15 @@ class FcmService implements FcmInterface
             $this->logger("Firebase Admin SDK : 0 Devices found");
             return;
         }
-        if(config("fcm-firebase.allow_fcm_token_log")) {
-            $this->logger("Firebase Admin SDk : Tokens : " . json_encode($tokens));
+        if (config("fcm-firebase.allow_fcm_token_log")) {
+            $this->logger("Firebase Admin SDk : Tokens : ".json_encode($tokens));
         }
-        $this->logger("Firebase Admin SDK : Sending " . count($tokens) . " firebase notifications.");
+        $this->logger("Firebase Admin SDK : Sending ".count($tokens)." firebase notifications.");
         $sendReport = $this->messaging->sendMulticast($message, $tokens);
         $this->logger("Firebase Admin SDK : {$sendReport->failures()->count()} notifications failed");
         $this->logger("Firebase Admin SDK : {$sendReport->successes()->count()} notifications were successful");
         $invalidTokens = $sendReport->invalidTokens();
-        if(count($invalidTokens)) {
+        if (count($invalidTokens)) {
             $this->logger("Firebase Admin SDK : Fire event Invalid Tokens");
             $this->logger("Firebase Admin SDK : Fire event Invalid Tokens");
             event(new InvalidTokensEvent($invalidTokens));
@@ -135,10 +135,10 @@ class FcmService implements FcmInterface
      */
     public function sendToTopic(CloudMessage $message)
     {
-        if(!$this->messaging) {
+        if (! $this->messaging) {
             InvalidConfiguration::serviceAccountNotConfigure();
         }
-        $this->logger("Firebase Admin SDk Message : " . json_encode($message));
+        $this->logger("Firebase Admin SDk Message : ".json_encode($message));
         $this->messaging->send($message);
     }
 
@@ -151,7 +151,7 @@ class FcmService implements FcmInterface
      */
     public function subscribeToTopic(array $tokens, $topic)
     {
-        if(!$this->messaging) {
+        if (! $this->messaging) {
             InvalidConfiguration::serviceAccountNotConfigure();
         }
         $this->messaging->subscribeToTopic($topic, $tokens);
@@ -166,7 +166,7 @@ class FcmService implements FcmInterface
      */
     public function unsubscribeFromTopic(array $tokens, $topic)
     {
-        if(!$this->messaging) {
+        if (! $this->messaging) {
             InvalidConfiguration::serviceAccountNotConfigure();
         }
         $this->messaging->unsubscribeFromTopic($topic, $tokens);
@@ -183,18 +183,18 @@ class FcmService implements FcmInterface
         $platformSupportNotification = $this->platformSupportNotificationKey($platform);
         $this->logger("*************** Pushing ******************");
 
-        $this->logger("$platform Support Notification key  : " .  ($platformSupportNotification ? "yes" : "no"));
+        $this->logger("$platform Support Notification key  : ".($platformSupportNotification ? "yes" : "no"));
         $this->logger("Start Push Fcm for $platform and lang ($lang)");
-        $fieldData = isset($field["data"]) ? $field["data"] : [] ;
+        $fieldData = isset($field["data"]) ? $field["data"] : [];
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
 
         $message = $this->buildFirebaseCloudMessage(
             [
-            "title" => $fieldData["title"],
-            "body" => $fieldData["body"],
-            "badge" => $fieldData["badge"] ?? 0 ,
-            "icon"  => $fieldData["icon"] ?? null,
-            "domain" => $fieldData["domain"] ?? null
+                "title" => $fieldData["title"],
+                "body" => $fieldData["body"],
+                "badge" => $fieldData["badge"] ?? '0',
+                "icon" => $fieldData["icon"] ?? null,
+                "domain" => $fieldData["domain"] ?? null
             ],
             array_merge(
                 $fieldData,
@@ -226,17 +226,17 @@ class FcmService implements FcmInterface
         $platformSupportNotification = $this->platformSupportNotificationKey($platform);
         $this->logger("*************** Pushing ******************");
 
-        $this->logger("$platform Support Notification key  : " .  ($platformSupportNotification ? "yes" : "no"));
+        $this->logger("$platform Support Notification key  : ".($platformSupportNotification ? "yes" : "no"));
         $this->logger("Start Push Fcm for $platform and lang ($lang)");
-        $fieldData = isset($field["data"]) ? $field["data"] : [] ;
+        $fieldData = isset($field["data"]) ? $field["data"] : [];
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
 
         $message = $this->buildFirebaseCloudMessageForTopic(
             [
                 "title" => $fieldData["title"],
                 "body" => $fieldData["body"],
-                "badge" => $fieldData["badge"] ?? 0 ,
-                "icon"  => $fieldData["icon"] ?? null,
+                "badge" => $fieldData["badge"] ?? 0,
+                "icon" => $fieldData["icon"] ?? null,
                 "domain" => $fieldData["domain"] ?? null
             ],
             $topic,
@@ -265,7 +265,7 @@ class FcmService implements FcmInterface
      */
     public function logger(string $message): void
     {
-        if(config("fcm-firebase.allow_fcm_log")) {
+        if (config("fcm-firebase.allow_fcm_log")) {
             logger($message);
         }
     }
@@ -278,6 +278,6 @@ class FcmService implements FcmInterface
      */
     public function platformSupportNotificationKey($platform)
     {
-        return !in_array(strtolower($platform), config("fcm-firebase.platform_not_need_notifications", ["android"]));
+        return ! in_array(strtolower($platform), config("fcm-firebase.platform_not_need_notifications", ["android"]));
     }
 }
