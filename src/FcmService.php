@@ -15,6 +15,35 @@ class FcmService implements FcmInterface
 {
     public Messaging $messaging;
 
+    private function stringifyFcmData(array $data): array
+    {
+        $stringData = [];
+
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                $stringData[$key] = '';
+                continue;
+            }
+
+            if (is_bool($value)) {
+                $stringData[$key] = $value ? 'true' : 'false';
+                continue;
+            }
+
+            if (is_scalar($value)) {
+                $stringData[$key] = (string) $value;
+                continue;
+            }
+
+            if (is_array($value)) {
+                $stringData[$key] = $this->stringifyFcmData($value);
+                continue;
+            }
+        }
+
+        return $stringData;
+    }
+
     public function __construct()
     {
         if (config("fcm-firebase.parse_service_account_in_init")) {
@@ -38,9 +67,9 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessage(array $notificationData, array $data = [], $platformSupportNotification = true): CloudMessage
     {
-        logger('data before buildFirebaseCloudMessage: ', $data);
+        $stringData = $this->stringifyFcmData($data);
         $message = CloudMessage::new()
-            ->withData($data)
+            ->withData($stringData)
             ->withHighestPossiblePriority()
             ->withApnsConfig(
                 ApnsConfig::new()
@@ -65,9 +94,10 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessageForTopic(array $notificationData, $topic, array $data = [], $platformSupportNotification = true): CloudMessage
     {
+        $stringData = $this->stringifyFcmData($data);
         $message = CloudMessage::new()
             ->withTarget('topic', $topic)
-            ->withData($data)
+            ->withData($stringData)
             ->withHighestPossiblePriority()
             ->withApnsConfig(
                 ApnsConfig::new()
@@ -189,10 +219,6 @@ class FcmService implements FcmInterface
         $fieldData = isset($field["data"]) ? $field["data"] : [];
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
 
-        logger('fieldData: ', [
-            "id" => isset($fieldData["id"]) ? $fieldData["id"] : '-1',
-            ...$fieldData,
-        ]);
         $message = $this->buildFirebaseCloudMessage(
             [
                 "title" => $fieldData["title"],
