@@ -188,20 +188,22 @@ class FcmService implements FcmInterface
         $fieldData = isset($field["data"]) ? $field["data"] : [];
         $fieldData = isset($field["notification"]) ? array_merge($fieldData, $field["notification"]) : $fieldData;
 
+        logger('fieldData: ', [
+            "id" => isset($fieldData["id"]) ? $fieldData["id"] : '-1',
+            ...$fieldData,
+        ]);
         $message = $this->buildFirebaseCloudMessage(
             [
                 "title" => $fieldData["title"],
                 "body" => $fieldData["body"],
                 "badge" => $fieldData["badge"] ?? '0',
-                "icon" => $fieldData["icon"] ?? null,
-                "domain" => $fieldData["domain"] ?? null
+                "icon" => $fieldData["icon"] ?? '',
+                "domain" => $fieldData["domain"] ?? ''
             ],
-            array_merge(
-                $fieldData,
-                [
-                    "id" => isset($fieldData["id"]) ? $fieldData["id"] : -1
-                ]
-            ),
+            [
+                "id" => isset($fieldData["id"]) ? $fieldData["id"] : '-1',
+                ...$fieldData,
+            ],
             $platformSupportNotification
         );
 
