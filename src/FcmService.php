@@ -38,12 +38,13 @@ class FcmService implements FcmInterface
      */
     public function buildFirebaseCloudMessage(array $notificationData, array $data = [], $platformSupportNotification = true): CloudMessage
     {
+        logger('data before buildFirebaseCloudMessage: ', $data);
         $message = CloudMessage::new()
             ->withData($data)
             ->withHighestPossiblePriority()
             ->withApnsConfig(
                 ApnsConfig::new()
-                    ->withBadge($notificationData["badge"] ?? 0)
+                    ->withBadge($notificationData["badge"] ?? '0')
             )
         ;
 
